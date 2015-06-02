@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace FirstXNAGame
 {
+    
     /// <summary>
     /// This is the main type for your game
     /// </summary>
@@ -21,6 +22,14 @@ namespace FirstXNAGame
 
         Texture2D texture_1;
         Rectangle rectangle_1;
+
+        Texture2D fire;
+        Rectangle rectangle_2;
+
+        private bool isFire = false;
+        private int spaceshipPositionX = 20;
+        private int spaceshipPositionY = 100;
+        //private Vector2 speed;
 
 
         public Game1()
@@ -54,8 +63,13 @@ namespace FirstXNAGame
 
             //Creates the spaceship sprite
             texture_1 = Content.Load<Texture2D>("nave");
-            rectangle_1 = new Rectangle(20, 100, 100, 100);
+            rectangle_1 = new Rectangle(spaceshipPositionX, spaceshipPositionY, 100, 100);
+            fire = Content.Load<Texture2D>("fire");
+            rectangle_2 = new Rectangle((spaceshipPositionX + 42), (spaceshipPositionY+100), 16, 16);
 
+            //speed.X = 3f;
+            //speed.Y = 3f;
+            
             // TODO: use this.Content to load your game content here
         }
 
@@ -80,19 +94,38 @@ namespace FirstXNAGame
                 this.Exit();
             
             //Moves the sprite around the screen, setting limits to the spaceship movement.
-            if (Keyboard.GetState().IsKeyDown(Keys.Right))
-                if(rectangle_1.X <= 700)
+            if (Keyboard.GetState().IsKeyDown(Keys.Right)) { 
+                if (rectangle_1.X <= 700) { 
                     rectangle_1.X += 3;
-            if (Keyboard.GetState().IsKeyDown(Keys.Left))
-                if(rectangle_1.X >= 0)
+                    spaceshipPositionX = rectangle_1.X;
+                }
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Left)) {
+                if (rectangle_1.X >= 0)
+                {
                     rectangle_1.X -= 3;
-            if (Keyboard.GetState().IsKeyDown(Keys.Up))
-                if(rectangle_1.Y >=5)
+                    spaceshipPositionX = rectangle_1.X;
+                }
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Up)) {
+                if (rectangle_1.Y >= 5) { 
                     rectangle_1.Y -= 3;
-            if (Keyboard.GetState().IsKeyDown(Keys.Down))
-                if (rectangle_1.Y <= 370)
+                    spaceshipPositionY = rectangle_1.Y;
+                }
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Down)) { 
+                if (rectangle_1.Y <= 370) { 
                     rectangle_1.Y += 3;
+                    spaceshipPositionY = rectangle_1.Y;
+                }
+            }
 
+            //rectangle_1.X = rectangle_1.X + (int)speed.X;
+            //rectangle_1.Y = rectangle_1.Y + (int)speed.Y;
+
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+                isFire = true;
 
             // TODO: Add your update logic here
 
@@ -108,7 +141,14 @@ namespace FirstXNAGame
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
+            
             spriteBatch.Draw(texture_1, rectangle_1, Color.White);
+
+            if (isFire)
+            {
+                spriteBatch.Draw(fire, rectangle_2, Color.White);    
+            }
+            
             spriteBatch.End();
             // TODO: Add your drawing code here
 
